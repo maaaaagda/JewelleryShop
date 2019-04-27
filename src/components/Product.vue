@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="product-container">
     <v-breadcrumbs class="v-breadcrumbs--large" :items="items">
       <template v-slot:divider>
         <v-icon>chevron_right</v-icon>
@@ -9,7 +9,9 @@
       <v-layout row wrap>
         <v-flex d-flex xs12 sm6 md7>
           <div class="model-container">
+            <v-layout align-center justify-center row fill-height>
             <product-model/>
+            </v-layout>
           </div>
         </v-flex>
         <v-flex d-flex xs12 sm6 md5>
@@ -65,5 +67,8 @@ export default {
   .product-description {
     text-align: start;
     font-size: 15px;
+  }
+  .product-container {
+    background-color: rgb(237,237,237);
   }
 </style>
