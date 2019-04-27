@@ -12,7 +12,7 @@
 
 <script>
 import GLTFLoader from 'three-gltf-loader'
-import ring from './models/ring.gltf'
+import ring from './models/ring_slim_little_diamonds.gltf'
 import Loader from '../Loader'
 const THREE = require('three')
 const OrbitControls = require('three-orbitcontrols')
@@ -25,8 +25,8 @@ export default {
       default: function () {
         return {
           name: 'Gold',
-          color: 'rgb(158,135,71)',
-          emissiveColor: 'rgb(127,109,57)',
+          color: 'rgb(158,135,70)',
+          emissiveColor: 'rgb(127,109,58)',
           texture: 'gold'
         }
       }
@@ -54,10 +54,10 @@ export default {
   methods: {
     init () {
       this.loading = true
-      this.camera = new THREE.PerspectiveCamera(50, 1, 5, 1000)
-      this.camera.position.set(-15, 20, 30)
+      this.camera = new THREE.PerspectiveCamera(35, 1, 5, 1000)
+      this.camera.position.set(-20, 30, 25)
       this.scene = new THREE.Scene()
-      this.scene.background = new THREE.Color('rgb(237,237,237)')
+      this.scene.background = new THREE.Color('rgb(254,254,254)')
 
       let slight = new THREE.AmbientLight('rgb(247,247,247)', 0.5)
       this.scene.add(slight)
@@ -95,7 +95,7 @@ export default {
         ring, (gltf) => {
           const root = gltf.scene
           this.updateMaterial(root, textureCube)
-          root.position.set(0, -8, 0)
+          root.position.set(0, -10, 0)
           root.name = 'ringModel'
           this.scene.add(root)
           this.loading = false
