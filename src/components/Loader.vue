@@ -5,10 +5,6 @@
 </template>
 
 <style scoped>
-  .loader-container {
-    width: 100%;
-    height: 100%;
-  }
   .loader {
     font-size: 10px;
     margin: 50px auto;

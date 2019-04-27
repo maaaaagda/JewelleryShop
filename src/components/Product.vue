@@ -10,7 +10,7 @@
         <v-flex d-flex xs12 sm6 md7>
           <div class="model-container">
             <v-layout align-center justify-center row fill-height>
-            <product-model/>
+            <product-model v-bind:ringMaterial="ringMaterial" model="pureHappiness"/>
             </v-layout>
           </div>
         </v-flex>
@@ -22,6 +22,9 @@
               quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
               Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</v-card-text>
             <v-card-title primary-title><h2>Price: 569$</h2></v-card-title>
+            <div>
+              <material-select v-on:change-selected-material="changeMaterial"/>
+            </div>
           </v-card>
           </v-flex>
       </v-layout>
@@ -31,9 +34,11 @@
 
 <script>
 import ProductModel from './threejs/ProductModel'
+import MaterialSelect from './MaterialSelect'
 export default {
   components: {
-    ProductModel
+    ProductModel,
+    MaterialSelect
   },
   data: () => ({
     items: [
@@ -52,8 +57,14 @@ export default {
         disabled: true,
         href: '/'
       }
-    ]
-  })
+    ],
+    ringMaterial: undefined
+  }),
+  methods: {
+    changeMaterial (material) {
+      this.ringMaterial = material
+    }
+  }
 }
 </script>
 

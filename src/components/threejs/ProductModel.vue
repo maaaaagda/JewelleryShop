@@ -19,6 +19,20 @@ const OrbitControls = require('three-orbitcontrols')
 
 export default {
   components: { Loader },
+  props: {
+    ringMaterial: {
+      type: Object,
+      default: function () {
+        return {
+          name: 'Gold',
+          color: 'rgb(158,135,71)',
+          emissiveColor: 'rgb(127,109,57)',
+          texture: 'gold'
+        }
+      }
+    },
+    model: String
+  },
   data: () => ({
     container: '',
     stats: '',
@@ -26,19 +40,28 @@ export default {
     scene: '',
     projector: '',
     renderer: '',
-    loading: true,
-    containerSize: 500
+    loading: false,
+    containerSize: 500,
+    textureCube: null
   }),
+  watch: {
+    ringMaterial: function (newMaterial) {
+      const ringMaterial = JSON.parse(JSON.stringify(newMaterial))
+      let ringModel = this.scene.getObjectByName('ringModel', true)
+      this.updateMaterial(ringModel, this.textureCube, ringMaterial)
+    }
+  },
   methods: {
     init () {
+      this.loading = true
       this.camera = new THREE.PerspectiveCamera(50, 1, 5, 1000)
-      this.camera.position.set(0, 0, 30)
+      this.camera.position.set(-15, 20, 30)
       this.scene = new THREE.Scene()
       this.scene.background = new THREE.Color('rgb(237,237,237)')
 
       let slight = new THREE.AmbientLight('rgb(247,247,247)', 0.5)
       this.scene.add(slight)
-      var light = new THREE.SpotLight('rgb(228,228,228)', 0.7)
+      var light = new THREE.SpotLight('rgb(251,255,194)', 0.7)
       light.position.set(0, 300, 0)
       light.castShadow = true
       light.shadow.radius = 1
@@ -60,44 +83,20 @@ export default {
       const urls = ['bedroom.jpg', 'window.jpg', 'ceilling.jpg', 'floor.jpg',
         'ceilling.jpg', 'ceilling.jpg'].map(url => require('./images/' + url))
       let textureCube = new THREE.CubeTextureLoader().load(urls)
+      textureCube.minFilter = THREE.NearestFilter
       textureCube.format = THREE.RGBFormat
       textureCube.mapping = THREE.CubeReflectionMapping
       textureCube.encoding = THREE.sRGBEncoding
+      this.textureCube = textureCube
 
-      let textureLoader = new THREE.TextureLoader()
-      let goldTexture = textureLoader.load(require('./images/gold.jpg'))
       const loader = new GLTFLoader()
       loader.setCrossOrigin('anonymous')
       loader.load(
         ring, (gltf) => {
           const root = gltf.scene
-          root.traverse(function (node) {
-            if (node.isMesh) {
-              if (node.material) {
-                let ringMaterial
-                if (!node.name.includes('diamondpink')) {
-                  ringMaterial = new THREE.MeshStandardMaterial({ envMap: textureCube })
-                  ringMaterial.emissive = new THREE.Color('rgb(158,135,71)')
-                  ringMaterial.emissiveMap = goldTexture
-                  ringMaterial.color = new THREE.Color('rgb(158,135,71)')
-                  ringMaterial.metalness = 0.9
-                  ringMaterial.roughness = 0.2
-                } else {
-                  ringMaterial = new THREE.MeshPhongMaterial({ envMap: textureCube })
-                  ringMaterial.emissive = new THREE.Color('rgb(254,255,247)')
-                  ringMaterial.color = new THREE.Color('rgb(155,177,202)')
-                  ringMaterial.specular = new THREE.Color('rgb(56,65,104)')
-                  ringMaterial.metalness = 0.8
-                  ringMaterial.roughness = 0.5
-                }
-                node.receiveShadow = false
-                node.material = ringMaterial
-                node.material.needsUpdate = true
-              }
-            }
-            node.castShadow = true
-          })
+          this.updateMaterial(root, textureCube)
           root.position.set(0, -8, 0)
+          root.name = 'ringModel'
           this.scene.add(root)
           this.loading = false
         }, (xhr) => {
@@ -118,15 +117,41 @@ export default {
       controls.enableZoom = true
       controls.minPolarAngle = -Math.PI / 2
       controls.maxPolarAngle = Math.PI / 2
-      let axesHelper = new THREE.AxesHelper(50)
-      this.scene.add(axesHelper)
-
-      let helper = new THREE.CameraHelper(light.shadow.camera)
-      this.scene.add(helper)
     },
     animate () {
       requestAnimationFrame(this.animate)
       this.renderer.render(this.scene, this.camera)
+    },
+    updateMaterial (ringModel, textureCube, newRingMaterial = this.ringMaterial) {
+      let textureLoader = new THREE.TextureLoader()
+      let texture = textureLoader.load(require('./textures/' + newRingMaterial.texture + '.jpg'))
+      texture.minFilter = THREE.NearestFilter
+      ringModel.traverse(node => {
+        if (node.isMesh) {
+          if (node.material) {
+            let ringMaterial
+            if (!node.name.includes('diamondpink')) {
+              ringMaterial = new THREE.MeshStandardMaterial({ envMap: textureCube })
+              ringMaterial.emissive = new THREE.Color(newRingMaterial.emissiveColor)
+              ringMaterial.emissiveMap = texture
+              ringMaterial.color = new THREE.Color(newRingMaterial.color)
+              ringMaterial.metalness = 0.7
+              ringMaterial.roughness = 0.5
+            } else {
+              ringMaterial = new THREE.MeshPhongMaterial({ envMap: textureCube })
+              ringMaterial.emissive = new THREE.Color('rgb(254,255,247)')
+              ringMaterial.color = new THREE.Color('rgb(155,177,202)')
+              ringMaterial.specular = new THREE.Color('rgb(56,65,104)')
+              ringMaterial.metalness = 0.8
+              ringMaterial.roughness = 0.5
+            }
+            node.receiveShadow = false
+            node.material = ringMaterial
+            node.material.needsUpdate = true
+          }
+        }
+        node.castShadow = true
+      })
     }
   },
   mounted () {
