@@ -11,9 +11,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "gltf-loader-2": "0.0.3",
     "gltf-webpack-loader": "^1.0.6",
     "three": "^0.104.0",
-    "three-gltf-loader": "^1.104.0",
     "three-orbitcontrols": "^2.102.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

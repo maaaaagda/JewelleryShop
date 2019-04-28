@@ -33,7 +33,7 @@
     content: '';
   }
   .loader:after {
-    background: #ffffff;
+    background: rgb(237,237,237);
     width: 75%;
     height: 75%;
     border-radius: 50%;

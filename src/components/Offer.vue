@@ -42,11 +42,14 @@
         </div>
       </v-layout>
     </v-container>
+    <best-sellers/>
   </div>
 </template>
 
 <script>
+import BestSellers from './BestSellers'
 export default {
+  components: { BestSellers },
   data: () => ({
     cards: [
       { title: 'Wedding rings', src: 'adult-beautiful-blossom-916344.jpg', flex: 3 },

@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import GLTFLoader from 'three-gltf-loader'
-import ring from './models/ring_slim_little_diamonds.gltf'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Loader from '../Loader'
 const THREE = require('three')
 const OrbitControls = require('three-orbitcontrols')
@@ -31,7 +30,7 @@ export default {
         }
       }
     },
-    model: String
+    product: Object
   },
   data: () => ({
     container: '',
@@ -49,10 +48,15 @@ export default {
       const ringMaterial = JSON.parse(JSON.stringify(newMaterial))
       let ringModel = this.scene.getObjectByName('ringModel', true)
       this.updateMaterial(ringModel, this.textureCube, ringMaterial)
+    },
+    product: function (newProduct) {
+      const productModel = newProduct.model
+      this.init(productModel)
+      this.animate()
     }
   },
   methods: {
-    init () {
+    init (productModel) {
       this.loading = true
       this.camera = new THREE.PerspectiveCamera(35, 1, 5, 1000)
       this.camera.position.set(-20, 30, 25)
@@ -92,7 +96,7 @@ export default {
       const loader = new GLTFLoader()
       loader.setCrossOrigin('anonymous')
       loader.load(
-        ring, (gltf) => {
+        this.getModel(productModel), (gltf) => {
           const root = gltf.scene
           this.updateMaterial(root, textureCube)
           root.position.set(0, -10, 0)
@@ -152,12 +156,17 @@ export default {
         }
         node.castShadow = true
       })
+    },
+    getModel (id) {
+      return require('./models/' + id + '.gltf')
     }
   },
   mounted () {
     this.container = this.$refs.container
-    this.init()
-    this.animate()
+    if (this.product.model) {
+      this.init(this.product.model)
+      this.animate()
+    }
   }
 }
 </script>
