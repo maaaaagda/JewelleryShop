@@ -4,7 +4,8 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+  @import '../styles/_globals.scss';
   .loader {
     font-size: 10px;
     margin: 50px auto;
@@ -12,8 +13,8 @@
     width: 11em;
     height: 11em;
     border-radius: 50%;
-    background: #929292;
-    background: linear-gradient(to right, #929292 10%, rgba(255, 255, 255, 0) 42%);
+    background: $loaderColor;
+    background: linear-gradient(to right, $loaderColor 10%, rgba(255, 255, 255, 0) 42%);
     position: relative;
     -webkit-animation: load3 1.4s infinite linear;
     animation: load3 1.4s infinite linear;
@@ -25,7 +26,7 @@
   .loader:before {
     width: 50%;
     height: 50%;
-    background: #929292;
+    background: $loaderColor;
     border-radius: 100% 0 0 0;
     position: absolute;
     top: 0;
@@ -33,7 +34,7 @@
     content: '';
   }
   .loader:after {
-    background: rgb(237,237,237);
+    background: $secondaryBgColor;
     width: 75%;
     height: 75%;
     border-radius: 50%;

@@ -13,6 +13,7 @@
 <script>
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import Loader from '../Loader'
+import styles from '../../styles/_globals.scss'
 const THREE = require('three')
 const OrbitControls = require('three-orbitcontrols')
 
@@ -51,6 +52,7 @@ export default {
     },
     product: function (newProduct) {
       const productModel = newProduct.model
+      this.clearContainer(this.container)
       this.init(productModel)
       this.animate()
     }
@@ -61,7 +63,7 @@ export default {
       this.camera = new THREE.PerspectiveCamera(35, 1, 5, 1000)
       this.camera.position.set(-20, 30, 25)
       this.scene = new THREE.Scene()
-      this.scene.background = new THREE.Color('rgb(254,254,254)')
+      this.scene.background = new THREE.Color(styles.secondaryBgColor)
 
       let slight = new THREE.AmbientLight('rgb(247,247,247)', 0.5)
       this.scene.add(slight)
@@ -159,6 +161,11 @@ export default {
     },
     getModel (id) {
       return require('./models/' + id + '.gltf')
+    },
+    clearContainer (container) {
+      while (container.hasChildNodes()) {
+        container.removeChild(container.lastChild)
+      }
     }
   },
   mounted () {

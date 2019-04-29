@@ -1,0 +1,13 @@
+$primaryBgColor: white;
+$secondaryBgColor: #ededed;
+
+$primaryColor: black;
+$secondaryColor: #f9ecad;
+
+$loaderColor: #929292;
+$shadowColor: #2c3e50;
+
+:export {
+  primaryBgColor: $primaryBgColor;
+  secondaryBgColor: $secondaryBgColor;
+}

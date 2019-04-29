@@ -65,7 +65,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  @import '../styles/_globals.scss';
   .offer-img {
     transition: transform 0.5s ease-in-out;
   }
@@ -86,9 +87,9 @@ export default {
     position: relative;
   }
   .main-title {
-    color: rgb(249, 236, 173);
+    color: $secondaryColor;
     text-align: center;
-    text-shadow: -5px 5px 5px #2c3e50;
+    text-shadow: -5px 5px 5px $shadowColor;
     font-family: 'Great vibes', cursive;
     font-size: 100px;
     position: absolute;

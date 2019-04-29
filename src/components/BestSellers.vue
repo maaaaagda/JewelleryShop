@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container class="app-container">
-      <div>
+      <div  v-if="!hideTitle">
         <p class="secondary-text ">Dayanara bestsellers</p>
       </div>
     </v-container>
@@ -50,6 +50,12 @@
 <script>
 import { rings } from '../globals'
 export default {
+  props: {
+    hideTitle: {
+      type: Boolean,
+      default: false
+    }
+  },
   data: () => ({
     bestSellers: rings
   }),

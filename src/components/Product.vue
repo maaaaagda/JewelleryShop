@@ -29,15 +29,18 @@
           </v-flex>
       </v-layout>
     </v-container>
+    <best-sellers hideTitle/>
   </div>
 </template>
 
 <script>
 import ProductModel from './threejs/ProductModel'
 import MaterialSelect from './MaterialSelect'
+import BestSellers from './BestSellers'
 import { rings } from '../globals'
 export default {
   components: {
+    BestSellers,
     ProductModel,
     MaterialSelect
   },
@@ -62,6 +65,13 @@ export default {
     ringMaterial: undefined,
     product: {}
   }),
+  watch: {
+    $route (to, from) {
+      if (to.params.productId !== from.params.productId) {
+        this.product = this.getChosenProduct(this.$route.params.productId)
+      }
+    }
+  },
   methods: {
     changeMaterial (material) {
       this.ringMaterial = material
@@ -76,7 +86,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  @import '../styles/_globals.scss';
   a.v-breadcrumbs__item:visited {
     color: black;
   }
@@ -88,6 +99,6 @@ export default {
     font-size: 15px;
   }
   .product-container {
-    background-color: rgb(237,237,237);
+    background-color: $secondaryBgColor;
   }
 </style>
