@@ -79,7 +79,7 @@ module.exports = {
         test: /\.(gltf)$/,
         use: [
           {
-            loader: "gltf-webpack-loader"
+            loader: path.resolve('src/loaders/webpack-gltf-loader.js')
           }
         ]
       },
