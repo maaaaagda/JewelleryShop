@@ -48,6 +48,7 @@ function deepReplace (obj, replace) {
  */
 
 module.exports = function WebpackGLTFLoader (content) {
+  const callback = this.async()
   const options = loaderUtils.getOptions(this) || {}
   validateOptions(schema, options, 'Webpack GLTF Loader')
   const context = options.context || this.rootContext
